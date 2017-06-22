@@ -13,23 +13,13 @@ public class Analyzer
 	
 	private String cleanReview(String review)	//filters the initial review string
 		{
-		String returnString = review.replace("n't"," not");	//remove n't
-		returnString = returnString.replace("'s","");	//remove 's
-		returnString = returnString.replace("'",""); //remove apostrophes
-		returnString = returnString.replace(".0/10","/10");
-		returnString = returnString.replace(".5/10","/10");
-		returnString = returnString.replace(":)","smiley-face");
+		String returnString = returnString.replaceAll("n't", " not");
+		returnString = returnString.replaceAll("\\d{2}\\/10", "/10");
+		returnString = returnString.replace(":)", "smiley-face");
 		returnString = returnString.replace(":(","frowny-face");
-		returnString = returnString.replace(",","");
-		returnString = returnString.replace(")"," ");
-		returnString = returnString.replace("("," ");
-		returnString = returnString.replace("!",".");
-		returnString = returnString.replace("?",".");
-		returnString = returnString.replace(" .",".");
-		returnString = returnString.replace(". ",".");	
-		returnString = returnString.replace("."," . ");
-		returnString = returnString.toLowerCase();//
-		return returnString;
+		returnString = returnString.replaceAll("('s?|[()!?]", "");
+		returnString = returnString.replaceAll("\\s?\\.\\s?", " . ");
+		return returnString.toLowerCase();
 		}
 	
 	public void addReviewData(String review, int reviewScore)
@@ -57,52 +47,13 @@ public class Analyzer
 		
 	public boolean filterSpanish(String review)	//filters out common spanish substrings to scrub data
 		{
-		if(review.indexOf("è") > 0)
-			{
-			//System.out.println(review.indexOf("è"));
-			return true;
-			}
-		if(review.indexOf(" esta ") > 0)
-			{
-			//System.out.println("esta"+review.indexOf("esta"));
-			return true;
-			}
-		if(review.indexOf(" este ") > 0)
-			{
-			//System.out.println("este"+review.indexOf("este"));
-			return true;
-			}
-		if(review.indexOf(" un ") > 0)
-			{
-			//System.out.println(" un "+review.indexOf(" un "));
-			return true;
-			}
-		if(review.indexOf(" una ") > 0)
-			{
-			//System.out.println(" una "+review.indexOf(" una "));
-			return true;
-			}
-		if(review.indexOf(" el ") > 0)
-			{
-			//System.out.println(" el "+review.indexOf(" el "));
-			return true;
-			}
-		if(review.indexOf(" los ") > 0)
-			{
-			//System.out.println(" los "+review.indexOf(" los "));
-			return true;
-			}
-		if(review.indexOf("ñ") > 0)
-			{
-			//System.out.println("ñ"+review.indexOf("ñ"));
-			return true;
-			}
+		return review.match("\\s(ï¿½|est[ae]|una?|el|los|ï¿½)\\s");
 		/*if(review.indexOf(" de ") > 0)
 			{
 			System.out.println(" de "+review.indexOf(" de "));
 			return true;
 			}*/
-		return false;	
+		// return false;	
 		}
 		
 	public float predictReviewScoreModified(String review)
